@@ -11,10 +11,21 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: radial-gradient(circle, #3d051e 0%, #1a0510 100%);
+            background: #1a0510; /* Cor de fundo base */
             color: #fff; height: 100vh; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
             transition: 0.5s;
+            perspective: 1000px;
+        }
+
+        /* CAMADA PARALLAX */
+        #parallax-bg {
+            position: fixed;
+            inset: -10%; /* Margem maior para não cortar o fundo no movimento */
+            background: radial-gradient(circle, #3d051e 0%, #1a0510 100%);
+            z-index: -1;
+            transition: transform 0.2s ease-out;
+            pointer-events: none;
         }
 
         #progress-bar {
@@ -47,10 +58,13 @@
         .vibe-ativa #speed-lines { opacity: 1; animation: moveLines 0.2s linear infinite; }
         @keyframes moveLines { from { background-position: 100% 0; } to { background-position: 0% 0; } }
 
-        .particle { position: absolute; border-radius: 50%; background: #fff; opacity: 0.2; animation: flutuar var(--d) infinite ease-in-out; pointer-events: none; z-index: 2; }
+        #particles-container { 
+            position: fixed; inset: 0; pointer-events: none; z-index: 2; 
+            transition: transform 0.15s ease-out; /* Movimento parallax das partículas */
+        }
+        .particle { position: absolute; border-radius: 50%; background: #fff; opacity: 0.2; animation: flutuar var(--d) infinite ease-in-out; }
         @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
 
-        /* Layout Adaptativo */
         .card {
             background: rgba(20, 0, 10, 0.95);
             border: 2px solid var(--rosa); border-radius: 30px;
@@ -123,7 +137,6 @@
         .btn-on { background: var(--amarelo) !important; color: #000 !important; animation: shake 0.1s infinite; }
         @keyframes shake { 0% { transform: translate(1px); } 100% { transform: translate(-1px); } }
 
-        /* Capa Presente Animada */
         #capa { position: fixed; inset: 0; background: #1a0510; z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 1s; }
         .presente-container { position: relative; width: 140px; height: 140px; cursor: pointer; perspective: 1000px; animation: pular 1.2s infinite; }
         .caixa-corpo { width: 100%; height: 100%; background: var(--rosa); border-radius: 10px; position: relative; box-shadow: 0 0 40px var(--rosa-brilho); transition: 0.8s; }
@@ -146,13 +159,14 @@
 </head>
 <body id="corpo">
 
+    <div id="parallax-bg"></div>
     <div id="progress-bar"></div>
     <div id="speed-lines"></div>
     <div id="particles-container"></div>
 
     <div id="sleep-overlay">
-        <h1 style="font-family: 'Dancing Script'; font-size: 40px;">Zzz... 😴</h1>
-        <p style="margin-top: 20px;">Dormiu que passou! <br> Sonhando com o próximo aniversário juntos.</p>
+        <h1 style="font-family: 'Dancing Script'; font-size: 40px;">Zzz...</h1>
+        <p style="margin-top: 20px;">Dormiu que passou! <br> .</p>
         <button onclick="acordar()" class="btn-nav" style="margin-top: 30px; background: none; border: 1px solid #fff;">Acordar</button>
     </div>
 
@@ -171,12 +185,20 @@
     </div>
 
     <div id="c1" class="card"><div class="media"><img src="https://i.pinimg.com/originals/f0/ae/8b/f0ae8bc86ab9b5459880ea9e8894774d.gif"></div><div><h2>Olá, Grazi 🌸</h2><div id="t1" class="texto"></div></div></div>
+    
     <div id="c2" class="card"><div class="media"><img src="https://i.pinimg.com/originals/5f/9d/40/5f9d4041c5b505d18842b2b47e9c8775.gif"></div><div><h2>23 de Abril ✨</h2><div id="t2" class="texto"></div><div id="contador"></div></div></div>
-    <div id="c3" class="card"><div class="media"><img src="https://i.pinimg.com/originals/16/2c/a1/162ca1d463e0d4c848fee9bd01d3042e.gif"></div><div><h2>Nossa vibe... 🎶</h2><div id="t3" class="texto"></div><button class="camaro-btn" id="btn-camaro" onclick="toggleCamaro()">🏎️ ACIONAR VIBE CAMARO</button></div></div>
-    <div id="c4" class="card"><div class="media"><img src="https://media.tenor.com/pOGPqDU93s0AAAAM/cat-phone-cat.gif"></div><div><h2>Calls e Jogos... 🎧</h2><div id="t4" class="texto"></div></div></div>
-    <div id="c5" class="card"><div class="media"><img src="https://i.pinimg.com/originals/73/0d/75/730d75ed729397068c7a89fa7476e305.gif"></div><div><h2>Especial ❤️</h2><div id="t5" class="texto"></div></div></div>
-    <div id="c6" class="card"><div class="media"><img src="https://i.pinimg.com/originals/e1/43/92/e14392b3bb9f745025a5cf6a9abe11be.gif"></div><div><h2>Para você... 🌹</h2><div id="t6" class="texto"></div></div></div>
-    <div id="c7" class="card"><div class="media"><img src="https://i.pinimg.com/736x/f6/df/54/f6df54fc1a82fb6b1ac48cf6dbd1170b.jpg"></div><div><h2>Feliz aniversário 🥳</h2><div id="t7" class="texto"></div></div></div>
+
+    <div id="c3" class="card"><div class="media"><img src="https://raw.githubusercontent.com/Dulkiey/agora-vai/main/nossoinicio.png" alt="Onde tudo começou"></div><div><h2>Onde tudo começou 🎮</h2><div id="t3" class="texto"></div></div></div>
+
+    <div id="c4" class="card"><div class="media"><img src="https://i.pinimg.com/originals/16/2c/a1/162ca1d463e0d4c848fee9bd01d3042e.gif"></div><div><h2>Nossa vibe... 🎶</h2><div id="t4" class="texto"></div><button class="camaro-btn" id="btn-camaro" onclick="toggleCamaro()">🏎️ ACIONAR VIBE CAMARO</button></div></div>
+    
+    <div id="c5" class="card"><div class="media"><img src="https://media.tenor.com/pOGPqDU93s0AAAAM/cat-phone-cat.gif"></div><div><h2>Calls e Jogos... 🎧</h2><div id="t5" class="texto"></div></div></div>
+    
+    <div id="c6" class="card"><div class="media"><img src="https://i.pinimg.com/originals/73/0d/75/730d75ed729397068c7a89fa7476e305.gif"></div><div><h2>Especial ❤️</h2><div id="t6" class="texto"></div></div></div>
+    
+    <div id="c7" class="card"><div class="media"><img src="https://i.pinimg.com/originals/e1/43/92/e14392b3bb9f745025a5cf6a9abe11be.gif"></div><div><h2>Para você... 🌹</h2><div id="t7" class="texto"></div></div></div>
+    
+    <div id="c8" class="card"><div class="media"><img src="https://i.pinimg.com/736x/f6/df/54/f6df54fc1a82fb6b1ac48cf6dbd1170b.jpg"></div><div><h2>Feliz aniversário 🥳</h2><div id="t8" class="texto"></div></div></div>
 
     <div class="dock" id="dock"></div>
 
@@ -187,12 +209,32 @@
         const msgs = {
             1: `Olaaa, Grazi! Espero que o seu dia esteja sendo maravilhoso nesse seu aniversário. Eu espero que eu não tenha te tirado do sério até agora, ainda mais em um dia tão especial. Eu já devo ter te falado isso, essa foi a minha primeira experiencia criando um site… mesmo assim, espero de coração que você goste ❤️`,
             2: `Quem diria que, há 19 anos, nessa mesma data, nasceria algo tão pitico e maravilhoso... Mas agora falando sério: que o seu dia especial seja incrível, e que eu possa torná-lo ainda melhor com esse site. Fico muito feliz por comemorar essa data ao seu lado. \n\nVocê é uma pessoa com vários lados, e todos eles eu gosto muito. **Você é maravilhosa** e consegue deixar tudo ao redor mais leve e mais simples ❤️.`,
-            3: `Sempre que eu ver um Camaro Amarelo, eu vou me lembrar de você cantando essa música baixinho na ligação. Você deixa tudo mais leve.`,
-            4: `Adoro os momentos que passamos em call e jogando juntos. São horas que voam e que sempre deixam o meu dia mais feliz e divertido.`,
-            5: `Sua inteligência, seu senso de humor e o seu jeito único de ser me encantam todos os dias. Todos os momentos que a gente tem junto eu vejo como eu sou sortudo **por ter você na minha vida.**`,
-            6: `Esse site foi desenvolvido para você, e apenas para você, para te mostrar o quanto você é especial para mim. Desculpa se ficou muito básico, mas foi feito de coração. 😖.`,
-            7: `E, por fim, eu agradeço muito por você me aturar todos os dias. Eu fiz isso mais como uma forma de agradecimento por você ser como é: uma pessoa amiga, parceira e um amor de pessoa. Eu espero que eu possa estar nos próximos aniversários contigo. E se você não gostou, **dorme que passa!** Eu fico muito feliz que eu tenha ido dormir tarde para jogar aquela partida de LoL e pude conhecer o **melhor duo** que poderia imaginar. Mais uma vez, feliz aniversário e que você conquiste tudo de bom na sua vida. Sempre irei torcer por você. **Te amo! <3**`
+            3: `Eu fico muito feliz que eu tenha ido dormir tarde para jogar aquela partida de LoL e pude conhecer o **melhor duo** que poderia imaginar. Esse print foi o início de tudo, o momento em que a gente se conheceu!`,
+            4: `Sempre que eu ver um Camaro Amarelo, eu vou me lembrar de você cantando essa música baixinho na ligação. Você deixa tudo mais leve.`,
+            5: `Eu amo o fato de que a gente pode passar horas conversando sobre tudo e sobre nada ao mesmo tempo. Jogar com você é o meu passatempo favorito, e eu não trocaria nossas madrugadas em call por nada nesse mundo (mesmo você me trocando por um salgado e um refresco 😓).`,
+            6: `Sua inteligência, seu senso de humor e o seu jeito único de ser me encantam todos os dias. Todos os momentos que a gente tem junto eu vejo como eu sou sortudo **por ter você na minha vida.**`,
+            7: `Eu nunca tinha feito nada parecido, mas por você eu quis aprender. Todo o esforço e os dias que passei aprendendo a criar este site valeram a pena. Esse é o meu presente 'feito à mão', e espero que você sinta, em cada detalhe, o carinho enorme que coloquei aqui.`,
+            8: `E, por fim, eu agradeço muito por você me aturar todos os dias. Eu fiz isso mais como uma forma de agradecimento por você ser como é: uma pessoa amiga, parceira e um amor de pessoa. Eu espero que eu possa estar nos próximos aniversários contigo. E se você não gostou, **dorme que passa!** Mais uma vez, feliz aniversário e que você conquiste tudo de bom na sua vida. Sempre irei torcer por você. **Te amo! <3**`
         };
+
+        // SCRIPT DO EFEITO PARALLAX
+        document.addEventListener('mousemove', (e) => {
+            const bg = document.getElementById('parallax-bg');
+            const particles = document.getElementById('particles-container');
+            
+            const moveX = (e.clientX - window.innerWidth / 2) / 25;
+            const moveY = (e.clientY - window.innerHeight / 2) / 25;
+
+            bg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            particles.style.transform = `translate(${moveX * 1.4}px, ${moveY * 1.4}px)`;
+        });
+
+        window.addEventListener('deviceorientation', (e) => {
+            const bg = document.getElementById('parallax-bg');
+            const moveX = e.gamma / 1.5;
+            const moveY = e.beta / 1.5;
+            bg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
 
         function playClick() {
             const click = document.getElementById('som-click');
@@ -245,7 +287,7 @@
         function nav(n) {
             playClick();
             clearInterval(window.typingTimer);
-            document.documentElement.style.setProperty('--progresso', `${(n/7)*100}%`);
+            document.documentElement.style.setProperty('--progresso', `${(n/8)*100}%`);
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             document.getElementById('c' + n).classList.add('active');
             
@@ -262,8 +304,8 @@
                 b.style.background = '#444'; b.innerText = 'Voltar'; b.onclick = () => nav(n-1); d.appendChild(b);
             }
             const prox = document.createElement('button'); prox.className = 'btn-nav';
-            prox.innerText = n === 7 ? 'TE AMO ❤️' : 'Continuar';
-            prox.onclick = n === 7 ? () => { playClick(); explosaoFinal(); } : () => nav(n+1);
+            prox.innerText = n === 8 ? 'TE AMO ❤️' : 'Continuar';
+            prox.onclick = n === 8 ? () => { playClick(); explosaoFinal(); } : () => nav(n+1);
             d.appendChild(prox);
 
             let i = 0; const el = document.getElementById('t' + n); el.innerHTML = "";
@@ -271,7 +313,7 @@
             window.typingTimer = setInterval(() => {
                 if(i <= msgs[n].length) {
                     let txt = msgs[n].substring(0, i).replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-                    if(n === 7) txt = txt.replace("dorme que passa!", "<span class='dorme-link' onclick='dormir()'>dorme que passa!</span>");
+                    if(n === 8) txt = txt.replace("dorme que passa!", "<span class='dorme-link' onclick='dormir()'>dorme que passa!</span>");
                     el.innerHTML = txt; i++;
                 } else { clearInterval(window.typingTimer); el.classList.remove('typing'); }
             }, 15);
